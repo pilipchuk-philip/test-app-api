@@ -7,10 +7,10 @@ from .managers import CustomUserManager
 
 class CustomUser(AbstractUser):
     username = None
-    email = models.EmailField(_('email address'), unique=True)
-    is_customer = models.BooleanField(_('Is Customer'), default=True)
+    email = models.EmailField(_("email address"), unique=True)
+    is_customer = models.BooleanField(_("Is Customer"), default=True)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()

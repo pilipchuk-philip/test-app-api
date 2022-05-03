@@ -29,26 +29,44 @@ from rest_framework_simplejwt.views import (
 )
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="Snippets API",
-      default_version='v1',
-      description="Test products order",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=[AllowAny],
+    openapi.Info(
+        title="Snippets API",
+        default_version="v1",
+        description="Test products order",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@snippets.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=[AllowAny],
 )
 
 urlpatterns = [
-    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('admin/', admin.site.urls),
-
-    path(f'api/{settings.API_VERSION}/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path(f'api/{settings.API_VERSION}/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path(f'api/{settings.API_VERSION}/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-
-    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path("", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
+    path("admin/", admin.site.urls),
+    path(
+        f"api/{settings.API_VERSION}/token/",
+        TokenObtainPairView.as_view(),
+        name="token_obtain_pair",
+    ),
+    path(
+        f"api/{settings.API_VERSION}/token/refresh/",
+        TokenRefreshView.as_view(),
+        name="token_refresh",
+    ),
+    path(
+        f"api/{settings.API_VERSION}/token/verify/",
+        TokenVerifyView.as_view(),
+        name="token_verify",
+    ),
+    path(f"api/{settings.API_VERSION}/", include("products.urls"), name="products"),
+    path(f"api/{settings.API_VERSION}/", include("orders.urls"), name="orders"),
+    re_path(
+        r"^swagger(?P<format>\.json|\.yaml)$",
+        schema_view.without_ui(cache_timeout=0),
+        name="schema-json",
+    ),
+    re_path(
+        r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
+    ),
 ]
